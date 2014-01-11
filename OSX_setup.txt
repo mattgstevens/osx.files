@@ -1,0 +1,24 @@
+# dev tools
+homebrew
+git
+diffmerge
+  http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/
+heroku
+heroku accounts
+  https://github.com/ddollar/heroku-accounts
+
+# dbs
+postgres
+redis
+
+# javscript
+npm
+grunt-cli
+karma
+
+# ruby
+rvm
+
+# storage
+dropbox
+bitcasa

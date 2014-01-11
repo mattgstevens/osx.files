@@ -1,0 +1,17 @@
+# usual suspects
+Applications/
+Desktop/
+Documents/
+Downloads/
+Dropbox/
+Library/
+Movies/
+Music/
+Pictures/
+Public/
+VirtualBox VMs/
+tmp/
+workspace/
+
+# all dot folders
+.*/
