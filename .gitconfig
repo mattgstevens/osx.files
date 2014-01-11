@@ -1,0 +1,24 @@
+[merge "gemfilelock"]
+  name = relocks the gemfile.lock
+  driver = bundle lock
+[user]
+  name = mattgstevens
+  email = mattgstevens@gmail.com
+[diff]
+  tool = diffmerge
+[difftool "diffmerge"]
+  cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+[merge]
+  ff = only
+  defaultToUpstream = true
+[mergetool "diffmerge"]
+  cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+  trustExitCode = true
+[core]
+  excludesfile = /Users/mattgstevens/.gitignore_global
+[push]
+  default = current
+[color]
+  ui = true
+[heroku]
+  account = mattgstevens

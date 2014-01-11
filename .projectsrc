@@ -1,0 +1,15 @@
+# Workspace
+WORKSPACE_DIR=~/workspace
+alias learn='cd $WORKSPACE_DIR/learning'
+alias libs='cd $WORKSPACE_DIR/libs'
+alias prez='cd $WORKSPACE_DIR/presentations'
+
+# Active Projects
+alias mgs='cd $WORKSPACE_DIR/projects/mattgstevens_com'
+alias rsearch='cd $WORKSPACE_DIR/projects/RSearch'
+
+# ClearFit
+alias clearfit='cd $WORKSPACE_DIR/dayjob/clearfit'
+alias hcp='heroku run console --app clearfit-production --account clearfit'
+alias hcs='heroku run console --app clearfit-staging --account clearfit'
+alias hcc='heroku run console --app clearfit-candidate-concierge --account clearfit'
