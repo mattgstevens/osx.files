@@ -99,7 +99,7 @@ alias slime='open -a "Sublime Text 2"'
 alias pentaho='pentaho.sh'
 
 # postgres
-alias cpg='pg_ctl start -D /usr/local/var/postgres'
+alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
 
 # redis
 alias cred='redis-server /usr/local/etc/redis.conf'
