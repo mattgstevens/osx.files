@@ -107,7 +107,7 @@ alias cred='redis-server /usr/local/etc/redis.conf'
 # rvm
 alias gems='slime `rvm gemdir`'
 alias rubies='slime $MY_RUBY_HOME'
-alias rvu='rvm use .rvmrc || rvm use .ruby-version'
+alias rvu='rvm use'
 alias rvc='rvm current'
 
 # zeus
