@@ -42,10 +42,10 @@ MYBIN=/Users/mattgstevens/bin
 HOMEBREW=/usr/local/bin
 NPM=/usr/local/share/npm/bin
 
-export PATH="$HOMEBREW:$PATH:$NPM:$MYBIN"
+export PATH="$HOMEBREW:$PATH:$NPM"
 
 if [ -f $HOME/.rvm/scripts/rvm ]; then
-       . $HOME/.rvm/scripts/rvm
+  . $HOME/.rvm/scripts/rvm
 fi
 
 
@@ -56,7 +56,12 @@ fi
 . $HOME/.projectsrc
 
 # backups
-alias drop='dropbox_as_backup.sh'
+alias drop='$MYBIN/dropbox_as_backup.sh'
+
+# databases
+alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
+alias cred='redis-server /usr/local/etc/redis.conf'
+alias cix='influxdb -config=/usr/local/etc/influxdb.conf'
 
 # heroku
 alias huclear='heroku accounts:set clearfit'
@@ -64,6 +69,8 @@ alias humatt='heroku accounts:set mattgstevens'
 alias hrc='heroku run console'
 
 # helper
+alias convert='ruby $MYBIN/conversions.rb'
+alias devup='$MYBIN/update_dev_tools.sh'
 alias lenv='source $MYBIN/load_env.sh'
 
 # git
@@ -97,12 +104,6 @@ alias diffmerge='diffmerge.sh'
 alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text 2"'
 alias pentaho='pentaho.sh'
-
-# postgres
-alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
-
-# redis
-alias cred='redis-server /usr/local/etc/redis.conf'
 
 # rvm
 alias gems='slime `rvm gemdir`'

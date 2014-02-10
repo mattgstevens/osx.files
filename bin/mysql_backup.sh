@@ -1,17 +1,7 @@
-# VARS
-timestamp=`date +%Y%m%d`
-backup_loc=/home/marketing/wordpress_backups/${timestamp}
-n_bak=5
 
-database=wordpress
-db_user=root
-db_dump=${backup_loc}/mysql.dump
-db_backup=${backup_loc}/mysql.tar.gz
-
-website=/var/www
-web_backup=${backup_loc}/www.tar.gz
 
 # FUNCS
+
 
 # Create a tar backup
 #
@@ -36,13 +26,14 @@ function backup {
   cd $start_dir
 }
 
-# Keeps the last 5 days of backups
 function cleanup {
+  n_bak=5
+
   start_dir=`pwd`
-  count=$(dirname $backup_loc | xargs ls | wc -l)
+  count=$(dirname $backup_dir | xargs ls | wc -l)
   echo "Found $count backups. Settings are to keep $n_bak."
 
-  cd $(dirname $backup_loc)
+  cd $(dirname $backup_dir)
   for (( ; count > n_bak; count-- )); do
     nfa=$(ls -lt | grep '^d' | tail -1  | tr " " "\n" | tail -1)
     echo "Removing backup dir $nfa"
@@ -54,31 +45,46 @@ function cleanup {
 }
 
 function notify {
-  printf "\n##################\n"
+  printf "\n####################\n$1\n####################\n"
 }
+
+function usage {
+  echo "What?"
+  echo "Will dump and archive a mysql database\n"
+  echo "Usage:"
+  echo"    (db_name, db_user, db_password, backup_directory)"
+}
+
 
 # MAIN
 
-printf "\nSTART: wordpress backup\n"
+
+if [ $# -lt 4 ]; then
+  usage
+  exit 1
+fi
+
+timestamp=`date +%Y%m%d`
+printf "\nSTART: db backup ${timestamp}\n"
+
+db_name=$1
+db_user=$2
+db_pass=$3
+backup_dir=$4/${timestamp}
+db_dump=${backup_dir}/mysql.dump
+db_backup=${backup_dir}/mysql.tar.gz
 
 # Ensure backup dir exists
-mkdir -p $backup_loc
+mkdir -p $backup_dir
 
-notify
-echo "Dumping mysql db $database as $db_dump"
-mysqldump $database -u $db_user -p$mysql_pass > $db_dump
+notify "Dumping mysql db $db_name as $db_dump"
+mysqldump $db_name -u $db_user -p$db_pass > $db_dump
 
-notify
-echo "Backing up wordpress sql"
+notify "Backing up db"
 backup $db_dump $db_backup
 rm $db_dump
 
-notify
-echo "Backing up wordpress website"
-backup $website $web_backup
-
-notify
-echo "Looking to cleanup older backups"
+notify "Looking to cleanup older backups"
 cleanup
 
-printf "END: wordpress backup\n\n"
+printf "END: db backup ${timestamp}\n\n"
