@@ -105,6 +105,9 @@ alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text 2"'
 alias pentaho='pentaho.sh'
 
+# redis
+alias redkeys='$MYBIN/redis_key_size.sh'
+
 # rvm
 alias gems='slime `rvm gemdir`'
 alias rubies='slime $MY_RUBY_HOME'
