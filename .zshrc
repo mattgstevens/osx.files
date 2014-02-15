@@ -86,6 +86,8 @@ alias gs='git status'
 alias gsv='git stash save'
 alias gsl='git stash list'
 alias gsp='git stash pop'
+alias grc='git rebase --continue'
+alias gri='git rebase -i'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 
