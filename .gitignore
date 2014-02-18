@@ -15,3 +15,6 @@ workspace/
 
 # all dot folders
 .*/
+
+# private files
+.projectsrc
