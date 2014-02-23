@@ -91,6 +91,10 @@ alias gri='git rebase -i'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 
+# grunt
+alias grd='grunt default'
+alias grw='grunt watch'
+
 # find
 alias y='ps -ef | grep $1'
 alias wat='find . * | xargs grep --mmap -l'
