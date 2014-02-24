@@ -62,6 +62,7 @@ alias drop='$MYBIN/dropbox_as_backup.sh'
 alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
 alias cred='redis-server /usr/local/etc/redis.conf'
 alias cix='influxdb -config=/usr/local/etc/influxdb.conf'
+alias cmemd='/usr/local/opt/memcached/bin/memcached'
 
 # heroku
 alias huclear='heroku accounts:set clearfit'
