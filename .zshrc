@@ -91,6 +91,7 @@ alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
+alias git-compress='git repack -a -d' # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
 
 # grunt
 alias grd='grunt default'
