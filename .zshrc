@@ -73,6 +73,7 @@ alias hrc='heroku run console'
 alias convert='ruby $MYBIN/conversions.rb'
 alias devup='$MYBIN/update_dev_tools.sh'
 alias lenv='source $MYBIN/load_env.sh'
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 # git
 alias ga='git add'
