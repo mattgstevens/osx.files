@@ -76,6 +76,7 @@ alias lenv='source $MYBIN/load_env.sh'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 # git
+alias git=hub
 alias ga='git add'
 alias gh='git checkout'
 alias gc='git commit'

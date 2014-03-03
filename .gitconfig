@@ -22,3 +22,5 @@
   ui = true
 [heroku]
   account = mattgstevens
+[hub]
+	protocol = https
