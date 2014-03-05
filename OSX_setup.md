@@ -23,3 +23,13 @@
 # storage
 - dropbox
 - bitcasa
+
+# awareness
+- brew tap phinze/cask
+- brew install brew-cask
+- brew cask install awareness
+
+# iterm alt movement
+action: 'Send Escape Sequence'
+- left: [1;5D
+- right: [1;5C
