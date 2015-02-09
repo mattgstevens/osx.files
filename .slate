@@ -1,0 +1,47 @@
+# more ideas
+# https://gist.githubusercontent.com/trishume/4121655/raw/.slate
+# https://github.com/jigish/slate/blob/master/Slate/default.slate
+# https://github.com/jigish/dotfiles/blob/master/slate
+
+config defaultToCurrentScreen true
+config resizePercentOf screenSize
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+
+# key combos
+
+alias twos      alt;ctrl
+alias threes    alt;ctrl;cmd
+
+# apps
+
+alias browser   'Google Chrome'
+alias editor    'Sublime Text 2'
+alias terminal  'iTerm'
+
+
+# Move
+bind /:${twos}          move screenOriginX;screenOriginY  screenSizeX;screenSizeY
+
+# Push
+bind right:${twos}      push right  bar-resize:screenSizeX/2
+bind left:${twos}       push left   bar-resize:screenSizeX/2
+bind up:${twos}         push up     bar-resize:screenSizeY/2
+bind down:${twos}       push down   bar-resize:screenSizeY/2
+
+# Focus
+bind right:${threes}    focus right
+bind left:${threes}     focus left
+bind up:${threes}       focus up
+bind down:${threes}     focus down
+
+# Nudge
+bind -:${twos}          nudge -10% +0
+bind =:${twos}          nudge +10% +0
+bind -:${threes}        nudge +0 +10%
+bind =:${threes}        nudge +0 -10%
+
+# App
+bind /:${threes}        focus ${browser}
+bind .:${threes}        focus ${editor}
+bind ,:${threes}        focus ${terminal}

@@ -15,7 +15,7 @@ function usage {
   echo "What?"
   echo "redis_key_size will print out the size of keys in a redis db"
   echo "Usage:"
-  echo "redkeys host port password keys"
+  echo "redkeys \"keys\" host port password"
 }
 
 if [ $# -eq 0 ]; then
@@ -23,18 +23,26 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-host=$1
-port=$2
-password=$3
-keys=$4
+keys=$1
+host=$2
+port=$3
+password=$4
 
-redis_cmd="redis-cli -p $port -a $password -h $host"
+if [ $password ]; then
+  redis_cmd="redis-cli -p $port -a $password -h $host"
+else
+  redis_cmd="redis-cli -p $port -h $host"
+fi
+
+echo $redis_cmd
 
 # get keys and sizes
 for k in `$redis_cmd keys "$keys"`; do key_size_bytes=`$redis_cmd debug object $k | perl -wpe 's/^.+serializedlength:([\d]+).+$/$1/g'`; size_key_list="$size_key_list$key_size_bytes $k\n"; done
 
 # sort the list
 sorted_key_list=`echo -e "$size_key_list" | sort -n`
+
+echo -e $sorted_key_list
 
 # print out the list with human readable sizes
 echo -e "$sorted_key_list" | while read l; do

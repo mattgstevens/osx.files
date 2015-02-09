@@ -28,7 +28,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git rails ruby rake)
+plugins=(git ruby)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -36,17 +36,14 @@ source $ZSH/oh-my-zsh.sh
 ### EXPORTS
 
 
-PATH=/usr/bin:/bin:/usr/sbin:/sbin
-
-MYBIN=/Users/mattgstevens/bin
+MYBIN=$HOME/bin
+HEROKU_TOOLBELT=/usr/local/heroku/bin
 HOMEBREW=/usr/local/bin
 NPM=/usr/local/share/npm/bin
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+RBENV=$HOME/.rbenv/bin
 
-export PATH="$HOMEBREW:$PATH:$NPM"
-
-if [ -f $HOME/.rvm/scripts/rvm ]; then
-  . $HOME/.rvm/scripts/rvm
-fi
+export PATH="$HOMEBREW:$PATH:$NPM:$HEROKU_TOOLBELT:$MYBIN"
 
 
 ### ALIASES
@@ -60,28 +57,34 @@ alias drop='$MYBIN/dropbox_as_backup.sh'
 
 # databases
 alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
-alias cred='redis-server /usr/local/etc/redis.conf'
+alias cred='redis-server /usr/local/etc/redis.conf&'
 alias cix='influxdb -config=/usr/local/etc/influxdb.conf'
-alias cmemd='/usr/local/opt/memcached/bin/memcached'
+alias cmemd='memcached -d'
+
+# docker
+#alias dock-con='docker rm $(docker ps -a | grep Exited | awk '{print $1}')'
+#alias dock-img='docker rmi $(docker images -q --filter "dangling=true")'
+#alias dock-stop='docker stop $(docker ps -a | grep $1 | awk '{print $1}')'
 
 # heroku
 alias huclear='heroku accounts:set clearfit'
 alias humatt='heroku accounts:set mattgstevens'
 alias hrc='heroku run console'
+alias henv='. $MYBIN/heroku_load_env.sh'
 
 # helper
-alias convert='ruby $MYBIN/conversions.rb'
-alias devup='$MYBIN/update_dev_tools.sh'
+alias afk="date && pmset sleepnow"
+alias conversion='ruby $MYBIN/conversions.rb'
 alias lenv='source $MYBIN/load_env.sh'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias serve='http-server -p $1'
 
 # git
-alias git=hub
 alias ga='git add'
 alias gh='git checkout'
 alias gc='git commit'
 alias gd='git difftool'
-alias gf='git fetch'
+alias gf='git fetch -p'
 alias gl='git log'
 alias gm'git merge'
 alias gp='git push'
@@ -94,10 +97,10 @@ alias gri='git rebase -i'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 alias git-compress='git repack -a -d' # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
+alias git-files='git diff-tree --no-commit-id --name-status -r'
 
-# grunt
-alias grd='grunt default'
-alias grw='grunt watch'
+alias git-transfer='$MYBIN/git-transfer.sh'
+alias gxfr='ruby $MYBIN/git-transfer.rb'
 
 # find
 alias y='ps -ef | grep $1'
@@ -109,20 +112,24 @@ alias duh='du -h'
 alias ll='ls -l'
 alias la='ls -la'
 
+# npm
+alias nis='npm install --save'
+
 # open
-alias diffmerge='diffmerge.sh'
 alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text 2"'
-alias pentaho='pentaho.sh'
+
+# osx
+alias emptytrash='rm -rf $HOME/.Trash'
 
 # redis
 alias redkeys='$MYBIN/redis_key_size.sh'
 
-# rvm
-alias gems='slime `rvm gemdir`'
-alias rubies='slime $MY_RUBY_HOME'
-alias rvu='rvm use'
-alias rvc='rvm current'
+# rbenv
+alias rvc='rbenv version'
+alias rvr='rbenv rehash'
+alias rvl='rbenv versions'
+alias rvu='rbenv local'
 
 # zeus
 alias zss='zeus start'
@@ -132,3 +139,14 @@ alias zr='zeus rake'
 
 # zsh
 alias zsr='source ~/.zshrc'
+
+
+### SETUP
+
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

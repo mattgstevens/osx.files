@@ -34,7 +34,7 @@ end
 
 # main
 
-if ARGV.length > 2
+if ARGV.length != 2
   usage; return
 end
 puts Conversions.send(ARGV[0], ARGV[1])
