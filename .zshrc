@@ -39,11 +39,10 @@ source $ZSH/oh-my-zsh.sh
 MYBIN=$HOME/bin
 HEROKU_TOOLBELT=/usr/local/heroku/bin
 HOMEBREW=/usr/local/bin
-NPM=/usr/local/share/npm/bin
 PATH=/usr/bin:/bin:/usr/sbin:/sbin
 RBENV=$HOME/.rbenv/bin
 
-export PATH="$HOMEBREW:$PATH:$NPM:$HEROKU_TOOLBELT:$MYBIN"
+export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN"
 
 
 ### ALIASES
@@ -57,9 +56,9 @@ alias drop='$MYBIN/dropbox_as_backup.sh'
 
 # databases
 alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
-alias cred='redis-server /usr/local/etc/redis.conf&'
 alias cix='influxdb -config=/usr/local/etc/influxdb.conf'
 alias cmemd='memcached -d'
+alias cred='redis-server /usr/local/etc/redis.conf&'
 
 # docker
 #alias dock-con='docker rm $(docker ps -a | grep Exited | awk '{print $1}')'
@@ -75,9 +74,14 @@ alias henv='. $MYBIN/heroku_load_env.sh'
 # helper
 alias afk="date && pmset sleepnow"
 alias conversion='ruby $MYBIN/conversions.rb'
+alias hk='openssl rand $1 -hex'
 alias lenv='source $MYBIN/load_env.sh'
+alias mkd='mkdir -p "${1}" && cd "$_"'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias serve='http-server -p $1'
+alias sr='http-server -p 4545 $1'
+
+# alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
+# alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
 
 # git
 alias ga='git add'
@@ -96,15 +100,18 @@ alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
-alias git-compress='git repack -a -d' # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
+# http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
+alias git-compress='git repack -a -d'
 alias git-files='git diff-tree --no-commit-id --name-status -r'
+git-clean() {git filter-branch --index-filter 'git update-index --remove $1' $2..HEAD}
 
-alias git-transfer='$MYBIN/git-transfer.sh'
-alias gxfr='ruby $MYBIN/git-transfer.rb'
+# alias git-transfer='$MYBIN/git-transfer.sh'
+# alias gxfr='ruby $MYBIN/git-transfer.rb'
 
 # find
 alias y='ps -ef | grep $1'
 alias wat='find . * | xargs grep --mmap -l'
+# find . -name '*.jade' -print | xargs grep 'data-equalizer'
 alias eh='LANG=; grep -ce $1 $2'
 
 # list
@@ -112,15 +119,12 @@ alias duh='du -h'
 alias ll='ls -l'
 alias la='ls -la'
 
-# npm
-alias nis='npm install --save'
-
 # open
 alias chrome='open -a "Google Chrome"'
-alias slime='open -a "Sublime Text 2"'
+alias slime='open -a "Sublime Text"'
 
 # osx
-alias emptytrash='rm -rf $HOME/.Trash'
+alias trash='rm -rf $HOME/.Trash'
 
 # redis
 alias redkeys='$MYBIN/redis_key_size.sh'
@@ -130,12 +134,6 @@ alias rvc='rbenv version'
 alias rvr='rbenv rehash'
 alias rvl='rbenv versions'
 alias rvu='rbenv local'
-
-# zeus
-alias zss='zeus start'
-alias zs='zeus server'
-alias zc='zeus console'
-alias zr='zeus rake'
 
 # zsh
 alias zsr='source ~/.zshrc'

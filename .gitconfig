@@ -37,4 +37,4 @@
   account = mattgstevens
 
 [hub]
-	protocol = https
+	protocol = ssh

@@ -1,24 +1,25 @@
 # dev tools
 - homebrew
 - git
+- LICEcap
+- sublime text 3
 - hub # http://hub.github.com/
-- diffmerge # http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/
-- heroku
-- heroku accounts # https://github.com/ddollar/heroku-accounts
-- sublime text 2
-- cryptocat
+- dash
+- iterm
+- oh-my-zsh
+- jq
 
 # dbs
 - postgres
 - redis
 
-# javascript
+# nodejs
 - npm
 - grunt-cli
 - karma
 
 # ruby
-- rvm
+- rbenv
 
 # storage
 - dropbox
@@ -33,3 +34,4 @@
 action: 'Send Escape Sequence'
 - left: [1;5D
 - right: [1;5C
+
