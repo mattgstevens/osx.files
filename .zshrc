@@ -49,7 +49,9 @@ export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN"
 
 
 # active projects
-. $HOME/.projectsrc
+if [ -f $HOME/.projectsrc ]; then
+	. $HOME/.projectsrc
+fi
 
 # backups
 alias drop='$MYBIN/dropbox_as_backup.sh'
