@@ -1,0 +1,28 @@
+{
+  "auto_complete_commit_on_tab": true,
+  "color_scheme": "Packages/Gutter Color/Seti_monokai (SL).gcfix.tmTheme",
+  "create_window_at_startup": false,
+  "ensure_newline_at_eof_on_save": true,
+  "folder_exclude_patterns":
+  [
+    ".git",
+    "bower_components",
+    "node_modules"
+  ],
+  "font_size": 15.0,
+  "hot_exit": false,
+  "ignored_packages":
+  [
+    "Vintage"
+  ],
+  "overlay_scroll_bars": "enabled",
+  "rulers":
+  [
+    80
+  ],
+  "show_tab_close_buttons": false,
+  "tab_size": 2,
+  "theme": "Seti.sublime-theme",
+  "translate_tabs_to_spaces": true,
+  "trim_trailing_white_space_on_save": true
+}

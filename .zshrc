@@ -55,10 +55,16 @@ fi
 
 # backups
 alias drop='$MYBIN/dropbox_as_backup.sh'
+alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
+alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
+alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
+
+# clojurescript
+alias cljsm='lein clean && lein cljsbuild once min'
 
 # databases
 alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
-alias cix='influxdb -config=/usr/local/etc/influxdb.conf'
+alias cix='influx -config=/usr/local/etc/influxdb.conf'
 alias cmemd='memcached -d'
 alias cred='redis-server /usr/local/etc/redis.conf&'
 
@@ -68,7 +74,6 @@ alias cred='redis-server /usr/local/etc/redis.conf&'
 #alias dock-stop='docker stop $(docker ps -a | grep $1 | awk '{print $1}')'
 
 # heroku
-alias huclear='heroku accounts:set clearfit'
 alias humatt='heroku accounts:set mattgstevens'
 alias hrc='heroku run console'
 alias henv='. $MYBIN/heroku_load_env.sh'
@@ -78,9 +83,10 @@ alias afk="date && pmset sleepnow"
 alias conversion='ruby $MYBIN/conversions.rb'
 alias hk='openssl rand $1 -hex'
 alias lenv='source $MYBIN/load_env.sh'
-alias mkd='mkdir -p "${1}" && cd "$_"'
+alias mkd='mkdir -p "$1" && cd "$_"'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias sr='http-server -p 4545 $1'
+alias srp='http-server -p 4545 public'
 
 # alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
 # alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
@@ -118,7 +124,6 @@ alias eh='LANG=; grep -ce $1 $2'
 
 # list
 alias duh='du -h'
-alias ll='ls -l'
 alias la='ls -la'
 
 # open
@@ -137,7 +142,14 @@ alias rvr='rbenv rehash'
 alias rvl='rbenv versions'
 alias rvu='rbenv local'
 
+# rysn
+alias rsync-copy="rsync -av --progress -h"
+alias rsync-move="rsync -av --progress -h --remove-source-files"
+alias rsync-update="rsync -avu --progress -h"
+alias rsync-synchronize="rsync -avu --delete --progress -h"
+
 # zsh
+alias zshrc='slime ~/.zshrc'
 alias zsr='source ~/.zshrc'
 
 
