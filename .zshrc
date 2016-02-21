@@ -95,26 +95,30 @@ alias srp='http-server -p 4545 public'
 alias ga='git add'
 alias gh='git checkout'
 alias gc='git commit'
-alias gd='git difftool'
+alias gd='git diff'
+alias gdc='git diff --cached'
 alias gf='git fetch -p'
 alias gl='git log'
-alias gm'git merge'
+alias gm='git merge --ff-only'
 alias gp='git push'
-alias gs='git status'
+alias gpf='git push --force-with-lease'
+alias gs='git status -sb'
 alias gsv='git stash save'
 alias gsl='git stash list'
 alias gsp='git stash pop'
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
+# rebase starting at commit hash $1 skip to commit $2 and continue
+alias gro='git rebase onto $1 $2 HEAD'
 alias git-authors='git log | grep Author | sort | uniq'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
-alias git-compress='git repack -a -d'
+alias git-compress='git repack -a -d -f --depth=100 --window=100 --window-memory=1g'
 alias git-files='git diff-tree --no-commit-id --name-status -r'
 git-clean() {git filter-branch --index-filter 'git update-index --remove $1' $2..HEAD}
 
 # alias git-transfer='$MYBIN/git-transfer.sh'
-# alias gxfr='ruby $MYBIN/git-transfer.rb'
+# alias git-transfer='ruby $MYBIN/git-transfer.rb'
 
 # find
 alias y='ps -ef | grep $1'
@@ -142,7 +146,7 @@ alias rvr='rbenv rehash'
 alias rvl='rbenv versions'
 alias rvu='rbenv local'
 
-# rysn
+# rsync
 alias rsync-copy="rsync -av --progress -h"
 alias rsync-move="rsync -av --progress -h --remove-source-files"
 alias rsync-update="rsync -avu --progress -h"
@@ -162,3 +166,5 @@ export NVM_DIR="$HOME/.nvm"
 
 # rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+source /usr/local/bin/virtualenvwrapper.sh

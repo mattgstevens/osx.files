@@ -11,10 +11,6 @@
   ff = only
   defaultToUpstream = true
 
-[mergetool "diffmerge"]
-  cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
-  trustExitCode = true
-
 [core]
   excludesfile = ~/.gitignore_global
   trustctime = false
