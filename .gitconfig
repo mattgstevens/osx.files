@@ -2,13 +2,7 @@
   name = mattgstevens
   email = mattgstevens@gmail.com
 
-[diff]
-  tool = diffmerge
-[difftool "diffmerge"]
-  cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
-
 [merge]
-  ff = only
   defaultToUpstream = true
 
 [core]
