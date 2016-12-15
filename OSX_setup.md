@@ -4,7 +4,6 @@
 - LICEcap
 - sublime text 3
 - hub # http://hub.github.com/
-- dash
 - iterm
 - oh-my-zsh
 - jq
@@ -14,16 +13,18 @@
 - redis
 
 # nodejs
-- npm
-- grunt-cli
-- karma
+- nvm
 
 # ruby
 - rbenv
 
+# UI management
+- slate
+
 # storage
 - dropbox
 - bitcasa
+- paperkey
 
 # awareness
 - brew tap phinze/cask
@@ -35,3 +36,7 @@ action: 'Send Escape Sequence'
 - left: [1;5D
 - right: [1;5C
 
+## TODO
+- how to restore dev environment completey?
+  * sublime settings
+  * check other people github repo

@@ -36,14 +36,15 @@ source $ZSH/oh-my-zsh.sh
 ### EXPORTS
 
 
-MYBIN=$HOME/bin
 HEROKU_TOOLBELT=/usr/local/heroku/bin
 HOMEBREW=/usr/local/bin
+MYBIN=$HOME/bin
 PATH=/usr/bin:/bin:/usr/sbin:/sbin
 RBENV=$HOME/.rbenv/bin
 
-export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN"
 
+export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN:$GOPATH/bin"
+export GOPATH
 
 ### ALIASES
 
@@ -73,23 +74,11 @@ alias cred='redis-server /usr/local/etc/redis.conf&'
 #alias dock-img='docker rmi $(docker images -q --filter "dangling=true")'
 #alias dock-stop='docker stop $(docker ps -a | grep $1 | awk '{print $1}')'
 
-# heroku
-alias humatt='heroku accounts:set mattgstevens'
-alias hrc='heroku run console'
-alias henv='. $MYBIN/heroku_load_env.sh'
-
-# helper
-alias afk="date && pmset sleepnow"
-alias conversion='ruby $MYBIN/conversions.rb'
-alias hk='openssl rand $1 -hex'
-alias lenv='source $MYBIN/load_env.sh'
-alias mkd='mkdir -p "$1" && cd "$_"'
-alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias sr='http-server -p 4545 $1'
-alias srp='http-server -p 4545 public'
-
-# alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
-# alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
+# find
+alias y='ps -ef | grep $1'
+alias wat='find . * | xargs grep --mmap -l'
+# find . -name '*.jade' -print | xargs grep 'data-equalizer'
+alias eh='LANG=; grep -ce $1 $2'
 
 # git
 alias ga='git add'
@@ -100,6 +89,7 @@ alias gdc='git diff --cached'
 alias gf='git fetch -p'
 alias gl='git log'
 alias gl0='git log --oneline'
+alias gls='git show --stat --oneline'
 alias gm='git merge --ff-only'
 alias gp='git push'
 alias gpf='git push --force-with-lease'
@@ -118,14 +108,44 @@ alias git-compress='git repack -a -d -f --depth=100 --window=100 --window-memory
 alias git-files='git diff-tree --no-commit-id --name-status -r'
 git-clean() {git filter-branch --index-filter 'git update-index --remove $1' $2..HEAD}
 
+_git-ls () {
+  for gitfile in $(git ls-tree -r --name-only HEAD);
+  do
+  echo "$( git log -1 --format="%ad %ae" --date=iso -- $gitfile ) $gitfile"
+  done
+}
+git-ls () {
+  _git-ls | column -t
+}
+git-lsr () {
+  _git-ls | sort -r
+}
+
 # alias git-transfer='$MYBIN/git-transfer.sh'
 # alias git-transfer='ruby $MYBIN/git-transfer.rb'
 
-# find
-alias y='ps -ef | grep $1'
-alias wat='find . * | xargs grep --mmap -l'
-# find . -name '*.jade' -print | xargs grep 'data-equalizer'
-alias eh='LANG=; grep -ce $1 $2'
+# go
+alias go-test-all='go test ./...'
+
+# heroku
+alias humatt='heroku accounts:set mattgstevens'
+alias hrc='heroku run console'
+alias henv='. $MYBIN/heroku_load_env.sh'
+
+# helper
+alias afk="date && pmset sleepnow"
+alias conversion='ruby $MYBIN/conversions.rb'
+alias hk='openssl rand $1 -hex'
+alias lenv='source $MYBIN/load_env.sh'
+alias mkd='mkdir -p "$1" && cd "$_"'
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias sr='http-server --cors $1'
+alias ytdl0='cd /Users/mattgstevens/workspace/learning/python/pafy/vids && source ../bin/activate'
+alias tj='alias tj="touch ~/Dropbox/journal/$(date +%d-%m-%Y).org && slime ~/Dropbox/journal/$(date +%d-%m-%Y).org"'
+# alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
+# alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
+# alias rename="ls | awk '/-shamsi/ {c=$0; gsub(\"-shamsi\", \"-mandala\"); system(\"mv \" c \" \" $0);}'"
+# alias follow="tail -fn 1000 <file> | grep <filter>"
 
 # list
 alias duh='du -h'
@@ -134,12 +154,14 @@ alias la='ls -la'
 # open
 alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text"'
+alias vs='open -a "Visual Studio Code"'
 
 # osx
 alias trash='rm -rf $HOME/.Trash'
 
 # redis
 alias redkeys='$MYBIN/redis_key_size.sh'
+alias reddel='function _reddel() { redis-cli KEYS "$1"* | xargs redis-cli DEL };_reddel'
 
 # rbenv
 alias rvc='rbenv version'
@@ -169,3 +191,12 @@ export NVM_DIR="$HOME/.nvm"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 source /usr/local/bin/virtualenvwrapper.sh
+
+# torch
+. /Users/mattgstevens/torch/install/bin/torch-activate
+
+# pure prompt
+PURE_PROMPT_SYMBOL=☯
+fpath+=("/usr/local/share/zsh/site-functions")
+autoload -U promptinit && promptinit
+prompt pure
