@@ -141,7 +141,7 @@ alias mkd='mkdir -p "$1" && cd "$_"'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias sr='http-server --cors $1'
 alias ytdl0='cd /Users/mattgstevens/workspace/learning/python/pafy/vids && source ../bin/activate'
-alias tj='alias tj="touch ~/Dropbox/journal/$(date +%d-%m-%Y).org && slime ~/Dropbox/journal/$(date +%d-%m-%Y).org"'
+alias tj='echo "# $(date +%Y%m%d)\n\n## today\n\n## soon\n\n## done" >> ~/Documents/journal/$(date +%Y%m%d).md && slime ~/Documents/journal'
 # alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
 # alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
 # alias rename="ls | awk '/-shamsi/ {c=$0; gsub(\"-shamsi\", \"-mandala\"); system(\"mv \" c \" \" $0);}'"
