@@ -60,6 +60,10 @@ alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Sto
 alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
 alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
 
+# certs
+alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
+
+
 # clojurescript
 alias cljsm='lein clean && lein cljsbuild once min'
 
@@ -154,7 +158,6 @@ alias la='ls -la'
 # open
 alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text"'
-alias vs='open -a "Visual Studio Code"'
 
 # osx
 alias trash='rm -rf $HOME/.Trash'
