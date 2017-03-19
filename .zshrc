@@ -63,7 +63,6 @@ alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Sto
 # certs
 alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
 
-
 # clojurescript
 alias cljsm='lein clean && lein cljsbuild once min'
 
@@ -74,9 +73,14 @@ alias cmemd='memcached -d'
 alias cred='redis-server /usr/local/etc/redis.conf&'
 
 # docker
-#alias dock-con='docker rm $(docker ps -a | grep Exited | awk '{print $1}')'
-#alias dock-img='docker rmi $(docker images -q --filter "dangling=true")'
-#alias dock-stop='docker stop $(docker ps -a | grep $1 | awk '{print $1}')'
+alias dkclean='docker rmi $(docker images -q --filter "dangling=true")'
+alias dkps='docker ps -a'
+alias dkrm='f() { docker rm $(docker ps -a | grep Exited | awk "{print $1}") };f'
+alias dkstop='f() { docker stop `$(docker ps -a | grep $1 | awk "{print $1}")` };f'
+
+alias dkm='docker-machine'
+alias dkmcreate='docker-machine create --driver virtualbox'
+alias dkmenv='f() { eval "$(docker-machine env $1)" };f'
 
 # find
 alias y='ps -ef | grep $1'
@@ -129,7 +133,7 @@ git-lsr () {
 # alias git-transfer='ruby $MYBIN/git-transfer.rb'
 
 # go
-alias go-test-all='go test ./...'
+alias gota='go test ./...'
 
 # heroku
 alias humatt='heroku accounts:set mattgstevens'
@@ -188,7 +192,7 @@ alias zsr='source ~/.zshrc'
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
