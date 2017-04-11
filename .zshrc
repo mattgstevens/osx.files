@@ -75,8 +75,13 @@ alias cred='redis-server /usr/local/etc/redis.conf&'
 # docker
 alias dkclean='docker rmi $(docker images -q --filter "dangling=true")'
 alias dkps='docker ps -a'
-alias dkrm='f() { docker rm $(docker ps -a | grep Exited | awk "{print $1}") };f'
-alias dkstop='f() { docker stop `$(docker ps -a | grep $1 | awk "{print $1}")` };f'
+alias dkrm='docker rm $(docker ps -a -q)'
+alias dkstop='docker stop $(docker ps -a -q)'
+alias dkhalt='dkstop && dkrm'
+# daemon
+alias dkd='docker run --rm -d -P'
+# interactive
+alias dki='docker run --rm -it -P'
 
 alias dkm='docker-machine'
 alias dkmcreate='docker-machine create --driver virtualbox'
@@ -110,6 +115,7 @@ alias gri='git rebase -i'
 # rebase starting at commit hash $1 skip to commit $2 and continue
 alias gro='git rebase --onto $1 $2 HEAD'
 alias git-authors='git log | grep Author | sort | uniq'
+alias git-contributors='git shortlog -s -n'
 alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
 alias git-compress='git repack -a -d -f --depth=100 --window=100 --window-memory=1g'
