@@ -60,8 +60,9 @@ alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Sto
 alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
 alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
 
-# certs
+# secrets
 alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
+alias makessh='f() { ssh-keygen -t rsa -b 4096 -C "$1" -f $HOME/.ssh/$1 -N "" };f'
 
 # clojurescript
 alias cljsm='lein clean && lein cljsbuild once min'
@@ -83,9 +84,11 @@ alias dkd='docker run --rm -d -P'
 # interactive
 alias dki='docker run --rm -it -P'
 
+# docker-machine
 alias dkm='docker-machine'
 alias dkmcreate='docker-machine create --driver virtualbox'
 alias dkmenv='f() { eval "$(docker-machine env $1)" };f'
+alias dkmboot='f() { dkm start $1 ; dkmenv $1 };f'
 
 # find
 alias y='ps -ef | grep $1'
