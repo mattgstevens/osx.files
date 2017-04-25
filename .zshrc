@@ -46,6 +46,7 @@ RBENV=$HOME/.rbenv/bin
 export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN:$GOPATH/bin"
 export GOPATH
 
+
 ### ALIASES
 
 
@@ -59,6 +60,8 @@ alias drop='$MYBIN/dropbox_as_backup.sh'
 alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
 alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
 alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
+# alias git-transfer='$MYBIN/git-transfer.sh'
+# alias git-transfer='ruby $MYBIN/git-transfer.rb'
 
 # secrets
 alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
@@ -87,6 +90,7 @@ alias dki='docker run --rm -it -P'
 # docker-machine
 alias dkm='docker-machine'
 alias dkmcreate='docker-machine create --driver virtualbox'
+alias dkmcreatedi='docker-machine create --driver digitalocean --digitalocean-access-token'
 alias dkmenv='f() { eval "$(docker-machine env $1)" };f'
 alias dkmboot='f() { dkm start $1 ; dkmenv $1 };f'
 
@@ -138,8 +142,8 @@ git-lsr () {
   _git-ls | sort -r
 }
 
-# alias git-transfer='$MYBIN/git-transfer.sh'
-# alias git-transfer='ruby $MYBIN/git-transfer.rb'
+# github
+github-user () { curl -i https://api.github.com/users/$1 }
 
 # go
 alias gota='go test ./...'
