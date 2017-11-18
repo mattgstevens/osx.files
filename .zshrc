@@ -57,6 +57,11 @@ fi
 
 # backups
 alias drop='$MYBIN/dropbox_as_backup.sh'
+alias ball='f() {
+echo "bwork"; bwork;
+echo "bdrop"; bdrop;
+echo "bproj"; bproj;
+};f'
 alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
 alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
 alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
@@ -69,6 +74,7 @@ alias makessh='f() { ssh-keygen -t rsa -b 4096 -C "$1" -f $HOME/.ssh/$1 -N "" };
 
 # clojurescript
 alias cljsm='lein clean && lein cljsbuild once min'
+alias figboot='rlwrap lein figwheel dev'
 
 # databases
 alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
@@ -77,6 +83,12 @@ alias cmemd='memcached -d'
 alias cred='redis-server /usr/local/etc/redis.conf&'
 
 # docker
+alias dkmac='f() {
+  unset DOCKER_TLS_VERIFY
+  unset DOCKER_CERT_PATH
+  unset DOCKER_MACHINE_NAME
+  unset DOCKER_HOST
+};f'
 alias dkclean='docker rmi $(docker images -q --filter "dangling=true")'
 alias dkps='docker ps -a'
 alias dkrm='docker rm $(docker ps -a -q)'
@@ -86,6 +98,8 @@ alias dkhalt='dkstop && dkrm'
 alias dkd='docker run --rm -d -P'
 # interactive
 alias dki='docker run --rm -it -P'
+# shell
+alias dks='docker exec -it $1 bash'
 
 # docker-machine
 alias dkm='docker-machine'
@@ -93,6 +107,9 @@ alias dkmcreate='docker-machine create --driver virtualbox'
 alias dkmcreatedi='docker-machine create --driver digitalocean --digitalocean-access-token'
 alias dkmenv='f() { eval "$(docker-machine env $1)" };f'
 alias dkmboot='f() { dkm start $1 ; dkmenv $1 };f'
+
+# ethereum
+alias mist='/Applications/Mist.app/Contents/MacOS/Mist --rpc http://localhost:8545 --swarmurl "null"'
 
 # find
 alias y='ps -ef | grep $1'
@@ -127,7 +144,7 @@ alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
 # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
 alias git-compress='git repack -a -d -f --depth=100 --window=100 --window-memory=1g'
 alias git-files='git diff-tree --no-commit-id --name-status -r'
-git-clean() {git filter-branch --index-filter 'git update-index --remove $1' $2..HEAD}
+git-clean() { git filter-branch --index-filter 'git rm --cached --ignore-unmatch $1' HEAD }
 
 _git-ls () {
   for gitfile in $(git ls-tree -r --name-only HEAD);
@@ -161,7 +178,8 @@ alias lenv='source $MYBIN/load_env.sh'
 alias mkd='mkdir -p "$1" && cd "$_"'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias sr='http-server --cors $1'
-alias ytdl0='cd /Users/mattgstevens/workspace/learning/python/pafy/vids && source ../bin/activate'
+alias ytdlmp3='youtube-dl $1 -x --audio-format "mp3"'
+alias ytdl='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]" $1'
 alias tj='echo "# $(date +%Y%m%d)\n\n## today\n\n## soon\n\n## done" >> ~/Documents/journal/$(date +%Y%m%d).md && slime ~/Documents/journal'
 # alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
 # alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
@@ -189,6 +207,9 @@ alias rvr='rbenv rehash'
 alias rvl='rbenv versions'
 alias rvu='rbenv local'
 
+# sublime
+alias subsnip='slime ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/'
+
 # rsync
 alias rsync-copy="rsync -av --progress -h"
 alias rsync-move="rsync -av --progress -h --remove-source-files"
@@ -210,6 +231,7 @@ export NVM_DIR="$HOME/.nvm"
 # rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+# virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 
 # torch
@@ -220,3 +242,6 @@ PURE_PROMPT_SYMBOL=☯
 fpath+=("/usr/local/share/zsh/site-functions")
 autoload -U promptinit && promptinit
 prompt pure
+
+# nix
+source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
