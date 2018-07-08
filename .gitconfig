@@ -22,13 +22,6 @@
   added = yellow
   changed = green
   untracked = cyan
-
-[heroku]
-  account = mattgstevens
-
-[hub]
-	protocol = ssh
-
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
@@ -37,3 +30,8 @@
 	gpgsign = false
 [pull]
 	rebase = true
+
+[heroku]
+  account = mattgstevens
+[hub]
+  protocol = ssh

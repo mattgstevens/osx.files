@@ -1,12 +1,6 @@
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
-
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
 
@@ -28,7 +22,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git ruby)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -36,15 +30,15 @@ source $ZSH/oh-my-zsh.sh
 ### EXPORTS
 
 
-HEROKU_TOOLBELT=/usr/local/heroku/bin
 HOMEBREW=/usr/local/bin
 MYBIN=$HOME/bin
 PATH=/usr/bin:/bin:/usr/sbin:/sbin
-RBENV=$HOME/.rbenv/bin
+PSC_PACKAGE=$HOME/workspace/learning/purescript/psc-package
+PURS=$HOME/purescript
+STACK=$HOME/.local/bin
 
 
-export PATH="$HOMEBREW:$PATH:$HEROKU_TOOLBELT:$MYBIN:$GOPATH/bin"
-export GOPATH
+export PATH="$HOMEBREW:$PATH:$MYBIN:$PURS:$PSC_PACKAGE:$STACK"
 
 
 ### ALIASES
@@ -56,17 +50,28 @@ if [ -f $HOME/.projectsrc ]; then
 fi
 
 # backups
-alias drop='$MYBIN/dropbox_as_backup.sh'
 alias ball='f() {
-echo "bwork"; bwork;
-echo "bdrop"; bdrop;
-echo "bproj"; bproj;
+echo "bwork"; time bwork;
+echo "bdrop"; time bdrop;
+echo "bdocs"; time bdocs;
+echo "bssh";  time bssh;
+echo "bbackgrounds";  time bbackgrounds;
+echo "bmusic";  time bmusic;
+echo "bmovies";  time bmovies;
+echo "bdesktop";  time bdesktop;
+echo "bhome";  time bhome;
+echo "bsublime";  time bsublime;
 };f'
-alias bwork="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
-alias bdrop="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
-alias bproj="rsync -avuzb -h --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/project-notes/ '/Volumes/Bali Bull/mattgstevens/project-notes/'"
-# alias git-transfer='$MYBIN/git-transfer.sh'
-# alias git-transfer='ruby $MYBIN/git-transfer.rb'
+alias bwork="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
+alias bdrop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
+alias bdocs="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/ '/Volumes/Bali Bull/mattgstevens/Documents/'"
+alias bssh="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/.ssh '/Volumes/Bali Bull/mattgstevens/.ssh/'"
+alias bbackgrounds="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Pictures/Backgrounds '/Volumes/Bali Bull/mattgstevens/Backgrounds/'"
+alias bmusic="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Music/ '/Volumes/Bali Bull/mattgstevens/Music/'"
+alias bmovies="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Movies/ '/Volumes/Bali Bull/mattgstevens/Movies/'"
+alias bdesktop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Desktop/ '/Volumes/Bali Bull/mattgstevens/Desktop/'"
+alias bhome="cp ~/.projectsrc ~/.zsh_history '/Volumes/Bali Bull/mattgstevens/HOME/'"
+alias bsublime="cp -R ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/* /Volumes/Bali\ Bull/mattgstevens/Application\ Support/Sublime\ Text\ 3/Packages/User/"
 
 # secrets
 alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
@@ -75,12 +80,6 @@ alias makessh='f() { ssh-keygen -t rsa -b 4096 -C "$1" -f $HOME/.ssh/$1 -N "" };
 # clojurescript
 alias cljsm='lein clean && lein cljsbuild once min'
 alias figboot='rlwrap lein figwheel dev'
-
-# databases
-alias cpg='pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/log/postgres/postgres.log'
-alias cix='influx -config=/usr/local/etc/influxdb.conf'
-alias cmemd='memcached -d'
-alias cred='redis-server /usr/local/etc/redis.conf&'
 
 # docker
 alias dkmac='f() {
@@ -99,7 +98,10 @@ alias dkd='docker run --rm -d -P'
 # interactive
 alias dki='docker run --rm -it -P'
 # shell
-alias dks='docker exec -it $1 bash'
+alias dks='docker run -it $1 /bin/sh'
+
+# special hostname for Docker for mac
+# POSTGRES_HOST=docker.for.mac.host.internal
 
 # docker-machine
 alias dkm='docker-machine'
@@ -114,21 +116,23 @@ alias mist='/Applications/Mist.app/Contents/MacOS/Mist --rpc http://localhost:85
 # find
 alias y='ps -ef | grep $1'
 alias wat='find . * | xargs grep --mmap -l'
-# find . -name '*.jade' -print | xargs grep 'data-equalizer'
+alias wat='find . -name $1 | xargs grep --mmap -l $2'
 alias eh='LANG=; grep -ce $1 $2'
 
 # git
+# there is always more
+# https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/
 alias ga='git add'
 alias gh='git checkout'
 alias gc='git commit'
-alias gd='git diff'
+alias gd='git diff -w'
 alias gdc='git diff --cached'
 alias gf='git fetch -p'
 alias gl='git log'
 alias gl0='git log --oneline'
 alias gls='git show --stat --oneline'
 alias gm='git merge --ff-only'
-alias gp='git push'
+alias gp='git push --follow-tags'
 alias gpf='git push --force-with-lease'
 alias gs='git status -sb'
 alias gsv='git stash save'
@@ -138,9 +142,10 @@ alias grc='git rebase --continue'
 alias gri='git rebase -i'
 # rebase starting at commit hash $1 skip to commit $2 and continue
 alias gro='git rebase --onto $1 $2 HEAD'
-alias git-authors='git log | grep Author | sort | uniq'
+alias git-authors='git log --no-merges | grep Author | sort | uniq'
 alias git-contributors='git shortlog -s -n'
-alias git-show-merges='ruby $MYBIN/git-show-merges.rb'
+alias git-recent='git for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"'
+alias git-overview='git log --all --since="2 weeks" --no-merges'
 # http://gcc.gnu.org/ml/gcc/2007-12/msg00165.html
 alias git-compress='git repack -a -d -f --depth=100 --window=100 --window-memory=1g'
 alias git-files='git diff-tree --no-commit-id --name-status -r'
@@ -164,31 +169,27 @@ github-user () { curl -i https://api.github.com/users/$1 }
 
 # go
 alias gota='go test ./...'
-
-# heroku
-alias humatt='heroku accounts:set mattgstevens'
-alias hrc='heroku run console'
-alias henv='. $MYBIN/heroku_load_env.sh'
+alias gopath='GOPATH=`pwd`'
 
 # helper
 alias afk="date && pmset sleepnow"
 alias conversion='ruby $MYBIN/conversions.rb'
+alias duh='du -h'
 alias hk='openssl rand $1 -hex'
+alias ix="curl -F 'f:1=<-' ix.io"
+alias la='ls -laT'
 alias lenv='source $MYBIN/load_env.sh'
 alias mkd='mkdir -p "$1" && cd "$_"'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias sr='http-server --cors $1'
-alias ytdlmp3='youtube-dl $1 -x --audio-format "mp3"'
-alias ytdl='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]" $1'
 alias tj='echo "# $(date +%Y%m%d)\n\n## today\n\n## soon\n\n## done" >> ~/Documents/journal/$(date +%Y%m%d).md && slime ~/Documents/journal'
+alias uuid='node -e "function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,b)}; console.log(b())"'
+alias ytdl='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]" $1'
+alias ytdlmp3='youtube-dl $1 -x --audio-format "mp3"'
 # alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
 # alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
 # alias rename="ls | awk '/-shamsi/ {c=$0; gsub(\"-shamsi\", \"-mandala\"); system(\"mv \" c \" \" $0);}'"
 # alias follow="tail -fn 1000 <file> | grep <filter>"
-
-# list
-alias duh='du -h'
-alias la='ls -la'
 
 # open
 alias chrome='open -a "Google Chrome"'
@@ -231,11 +232,8 @@ export NVM_DIR="$HOME/.nvm"
 # rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-# virtualenv
-source /usr/local/bin/virtualenvwrapper.sh
-
 # torch
-. /Users/mattgstevens/torch/install/bin/torch-activate
+# . /Users/mattgstevens/torch/install/bin/torch-activate
 
 # pure prompt
 PURE_PROMPT_SYMBOL=☯
@@ -244,4 +242,10 @@ autoload -U promptinit && promptinit
 prompt pure
 
 # nix
-source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
