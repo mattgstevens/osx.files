@@ -1,37 +1,65 @@
 [user]
   name = mattgstevens
   email = mattgstevens@gmail.com
+  signingkey = 93C29FEDF7E943F6
 
 [merge]
+  # When running merge command, assume its the upstream.
   defaultToUpstream = true
 
 [core]
+  # global gitignore
   excludesfile = ~/.gitignore_global
+
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error
+  # [default] trailing-space: looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+  # Make `git rebase` safer on macOS
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
   trustctime = false
+
+  # Prevent showing files whose names contain non-ASCII symbols as unversioned
+  # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+  precomposeunicode = false
+
+  # Speed up commands involving untracked files such as `git status`
+  # https://git-scm.com/docs/git-update-index#_untracked_cache
+  untrackedCache = true
 
 [push]
   default = current
 
+  # Make push command include relevant tags when pushing branches out
+  followTags = true
+
 [color]
   ui = auto
+
 [color "branch"]
   current = white
   local = green
   remote = cyan
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
+
 [color "status"]
   added = yellow
   changed = green
   untracked = cyan
-[filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
-[commit]
-	gpgsign = false
-[pull]
-	rebase = true
 
-[heroku]
-  account = mattgstevens
-[hub]
-  protocol = ssh
+[filter "lfs"]
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+
+[commit]
+  gpgsign = true
+
+[pull]
+  rebase = true

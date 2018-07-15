@@ -13,6 +13,12 @@ VirtualBox VMs/
 tmp/
 workspace/
 
+# dev tool histories
+.lesshst
+.node_repl_history
+.yarnrc
+.zsh_history
+
 # all dot folders
 .*/
 

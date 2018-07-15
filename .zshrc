@@ -1,33 +1,54 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Comment this out to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment to change how many often would you like to wait before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-COMPLETION_WAITING_DOTS="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
+#
+# Antigen
+#
 
 
-### EXPORTS
+source ~/antigen.zsh
+
+# plugins
+
+antigen bundle zsh-users/zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
+ZSH_AUTOSUGGEST_STRATEGY='match_prev_cmd'
+
+# antigen bundle zsh-users/zsh-syntax-highlighting
+
+# theme config
+
+export TERM="xterm-256color"
+# -> execution time
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='black'
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='blue'
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
+# -> prompt
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time command_execution_time dir vcs)
+POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
+# -> how many minutes to sample average system load
+POWERLEVEL9K_LOAD_WHICH=5
+# -> more prompt
+POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="☯︎ "
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram load date)
+POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
+POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+# -> current directory
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_SHORTEN_STRATEGY=Default
+# -> use theme
+POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
+antigen theme bhilburn/powerlevel9k powerlevel9k
+
+# use other frameworks
+antigen use oh-my-zsh
+
+# apply
+antigen apply
+
+
+#
+# EXPORTS
+#
 
 
 HOMEBREW=/usr/local/bin
@@ -41,7 +62,9 @@ STACK=$HOME/.local/bin
 export PATH="$HOMEBREW:$PATH:$MYBIN:$PURS:$PSC_PACKAGE:$STACK"
 
 
-### ALIASES
+#
+# ALIASES
+#
 
 
 # active projects
@@ -123,6 +146,8 @@ alias eh='LANG=; grep -ce $1 $2'
 # there is always more
 # https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/
 alias ga='git add'
+alias gb='git branch'
+alias gbr='git branch --remote'
 alias gh='git checkout'
 alias gc='git commit'
 alias gd='git diff -w'
@@ -167,11 +192,16 @@ git-lsr () {
 # github
 github-user () { curl -i https://api.github.com/users/$1 }
 
+# gpg
+alias gpgls='gpg --list-secret-keys --keyid-format LONG'
+alias gpgex='gpg --armor --export $1'
+
 # go
 alias gota='go test ./...'
 alias gopath='GOPATH=`pwd`'
 
 # helper
+alias ..='cd ..'
 alias afk="date && pmset sleepnow"
 alias conversion='ruby $MYBIN/conversions.rb'
 alias duh='du -h'
@@ -222,7 +252,9 @@ alias zshrc='slime ~/.zshrc'
 alias zsr='source ~/.zshrc'
 
 
-### SETUP
+#
+# TOOLS
+#
 
 
 # nvm
@@ -235,17 +267,14 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # torch
 # . /Users/mattgstevens/torch/install/bin/torch-activate
 
-# pure prompt
-PURE_PROMPT_SYMBOL=☯
-fpath+=("/usr/local/share/zsh/site-functions")
-autoload -U promptinit && promptinit
-prompt pure
-
 # nix
 # source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
+# google cloud SDK
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# gpg signing commit messages
+export GPG_TTY=$(tty)

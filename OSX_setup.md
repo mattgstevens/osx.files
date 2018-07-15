@@ -1,6 +1,7 @@
 # Restoring a OSX machine
 Notes on backing up and performing a fresh install
 
+
 ## Preparation
 - prepare USB stick as bootable media
 - prepare USB to decrypt backup drive
@@ -12,77 +13,76 @@ Notes on backing up and performing a fresh install
 :spinner:
 
 
-## OSX
-- disable spotlight in `~/workspace`
-- disable default key bindings for spaces / launchbar
-- turn off genie effect for launchbar
+## copy over needed files from backup
 
-## -> install homebrew and cask
+
+## -> install homebrew
 https://brew.sh/
-
-cask_args appdir: '/Applications'
-tap 'caskroom/cask'
-tap 'caskroom/versions'
-
-
-## update python (used for many installs)
-brew 'python3'
 
 
 ## -> dev tools
-brew cask install caskroom/versions/sublime-text3
-brew cask install docker
-brew cask install iterm2
-- keepassx
+- brew cask install sublime-text
+- brew cask install docker
+- brew cask install iterm2
+  * set color theme
+    - Preference -> Profiles -> Colors -> Color presets (solarized dark)
+  * allow alt & arrow key movement
+    - Preference -> Keys
+    - action: 'Send Escape Sequence'
+      - left: b
+      - right: f
+  * set Prefereces -> Profile -> General -> Working directory reuses previous session
+- https://ohmyz.sh
+- https://www.keepassx.org
+  * set preferences to auto lock
 - kubernetic
-- oh-my-zsh
 - webpack dashboard
 
 
 ## -> terminal
 <!-- basics -->
-brew install coreutils
+- brew install coreutils
 <!-- audio -->
-brew install ffmpeg
+- brew install ffmpeg
 <!-- fun with ascii -->
-brew install figlet
+- brew install figlet
 <!-- core -->
-brew install git
+- brew install git
 <!-- gpg -->
-brew install gnupg
+- brew install gnupg
 <!-- image compression -->
-brew install guetzli
+- brew install guetzli
 <!-- image manipulation -->
-brew install imagemagick
+- brew install imagemagick
 <!-- fun stuff with p2p -->
-brew install ipfs
+- brew install ipfs
 <!-- work with json -->
-brew install jq
+- brew install jq
 <!-- more better utils than OSX defaults -->
-brew install moreutils
+- brew install moreutils
 <!-- core -->
-brew install openssl
+- brew install openssl
 <!-- fast on-the-wire compressions -->
-brew install snappy
+- brew install snappy
 <!-- pretty print directories -->
-brew install tree
+- brew install tree
 <!-- run a command on a timer -->
-brew install watch
+- brew install watch
 <!-- sniff those packets -->
-brew install wireshark
+- brew install wireshark
 <!-- work with youtube as a store of videos -->
-brew install youtube-dl
+- brew install youtube-dl
 <!-- more better compression at rest -->
-brew install xz
+- brew install xz
 
 
 ## -> messaging
-brew cask install cryptocat
-brew cask install signal
-brew cask install skype
-brew cask install slack
-brew cask install telegram
-brew cask install whatsapp
+- cryptocat
+- brew cask install signal
+- brew cask install skype
+- brew cask install slack
+- brew cask install telegram
+- brew cask install whatsapp
 
 
 ## -> bits and coins
@@ -92,54 +92,49 @@ brew cask install whatsapp
 
 ## -> media
 brew cask install skitch
-brew cask install sonos
 brew cask install vlc
-- iExplorer
-- pocket
-- LICEcap
+- GpgMail -> https://gpgtools.org
 - calibre
+- iExplorer
+- LICEcap
+- pocket
+- sonos
 
 
 ## applications
-brew cask install amethyst
-brew cask install chrome
-brew cask install firefox
-brew cask install flux
-brew cask install launchbar
+- brew cask install amethyst
+  * allow Accessibility in `Security & Privacy`
+  * turn on "start at login"
+  * update key bindings
+- brew cask install awareness
+- brew cask install firefox
+- brew cask install flux
+  * configure to "classic flux"
+- brew cask install google-chrome
 - smcFanControl
-- Übersicht
-
-### apple store
-- pixelmator
 
 
 ## -> storage
-brew cask install dropbox
+- brew cask install dropbox
 - paperkey
-
-
-## -> awareness
-- brew tap phinze/cask
-- brew install brew-cask
-- brew cask install awareness
 
 
 ## Languages
 
 ### clojurescript
-brew install planck
+- brew install planck
 
 ### ethereum
 - yarn global add solhydra
 
 ### haskell
-brew install haskell-stack
+- brew install haskell-stack
 
 ### nodejs
-- nvm
-brew install yarn
-yarn global add http-server
-yarn global add jsonogram
+- https://github.com/creationix/nvm
+- brew install yarn
+- yarn global add http-server
+- yarn global add jsonogram
 
 ### purescript
 - yarn global add pulp
@@ -148,10 +143,16 @@ yarn global add jsonogram
 - virtualenv
 
 
-## iterm alt movement
-action: 'Send Escape Sequence'
-- left: [1;5D
-- right: [1;5C
+## OSX
+- turn on filesystem encryption
+- disable user interface sounds
+- show battery percentag
+- disable spotlight for directory `~/workspace`
+- disable default key bindings for spaces / launchbar
+- activity monitor -> Dock Icon is display App icon
+- keyboard modifier keys -> caps lock to control
+- change computer name
+- Safari -> View "show status bar" (to get link hover URL preview)
 
 
 ## system fonts
