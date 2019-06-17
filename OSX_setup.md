@@ -12,8 +12,11 @@ Notes on backing up and performing a fresh install
 ## Perform fresh install
 :spinner:
 
+## copy over needed files from backup drive
 
-## copy over needed files from backup
+
+## update DNS server to use 1.1.1.1 project
+https://1.1.1.1
 
 
 ## -> install homebrew
@@ -35,9 +38,13 @@ https://brew.sh/
 - https://ohmyz.sh
 - https://www.keepassx.org
   * set preferences to auto lock
-- kubernetic
-- webpack dashboard
-
+- gotop
+  * https://github.com/cjbassi/gotop
+- fzf -> faster terminal searching
+  * brew install fzf
+- dive -> tool for looking at Docker layers
+- brew tap wagoodman/dive
+- brew install dive
 
 ## -> terminal
 <!-- basics -->
@@ -46,8 +53,9 @@ https://brew.sh/
 - brew install ffmpeg
 <!-- fun with ascii -->
 - brew install figlet
-<!-- core -->
+<!-- git -->
 - brew install git
+- brew install git-extras
 <!-- gpg -->
 - brew install gnupg
 <!-- image compression -->
@@ -60,8 +68,10 @@ https://brew.sh/
 - brew install jq
 <!-- more better utils than OSX defaults -->
 - brew install moreutils
-<!-- core -->
+<!-- baseline ssl for many other installs -->
 - brew install openssl
+<!-- recursively searches for a regex, using gitignore rules -->
+- brew install ripgrep
 <!-- fast on-the-wire compressions -->
 - brew install snappy
 <!-- pretty print directories -->
@@ -76,29 +86,47 @@ https://brew.sh/
 - brew install xz
 
 
+## better defaults for OSX
+- git clone
+- `~/.osx-setup.sh`
+
+
+## -> web dev
+- webpack dashboard
+  * https://github.com/FormidableLabs/webpack-dashboard
+
+
+## -> kubernetes
+- kubernetic
+  * https://www.kubernetic.com/
+- kubetail
+  * brew tap johanhaleby/kubetail && brew install kubetail
+- kubectx
+  * brew install kubectx
+
+
 ## -> messaging
-- cryptocat
 - brew cask install signal
 - brew cask install skype
 - brew cask install slack
 - brew cask install telegram
 - brew cask install whatsapp
+- cryptocat
 
 
 ## -> bits and coins
 - electrum
-- ganache
 
 
 ## -> media
-brew cask install skitch
-brew cask install vlc
-- GpgMail -> https://gpgtools.org
+- brew cask install skitch
+- brew cask install vlc
 - calibre
 - iExplorer
 - LICEcap
 - pocket
 - sonos
+- servo
 
 
 ## applications
@@ -111,7 +139,6 @@ brew cask install vlc
 - brew cask install flux
   * configure to "classic flux"
 - brew cask install google-chrome
-- smcFanControl
 
 
 ## -> storage
@@ -126,18 +153,24 @@ brew cask install vlc
 
 ### ethereum
 - yarn global add solhydra
+- yarn global add truffle-flattener
+- pip3 install manticore
+- pip3 install slither
+- download and install echidna
+- curl https://dapp.tools/install | sh
 
 ### haskell
 - brew install haskell-stack
 
 ### nodejs
-- https://github.com/creationix/nvm
+- nvm
+  * https://github.com/creationix/nvm
 - brew install yarn
 - yarn global add http-server
 - yarn global add jsonogram
+- yarn global add graphqurl
+- yarn global add node-notifier
 
-### purescript
-- yarn global add pulp
 
 ### python
 - virtualenv
@@ -146,7 +179,7 @@ brew cask install vlc
 ## OSX
 - turn on filesystem encryption
 - disable user interface sounds
-- show battery percentag
+- show battery percentage
 - disable spotlight for directory `~/workspace`
 - disable default key bindings for spaces / launchbar
 - activity monitor -> Dock Icon is display App icon

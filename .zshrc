@@ -1,78 +1,74 @@
 #
-# Antigen
+# Init
 #
 
+# plan is to move to setup like
+# https://github.com/caarlos0/dotfiles
+export DOTFILES="$HOME/dotfiles"
 
-source ~/antigen.zsh
+# all of our zsh files
+typeset -U config_files
+config_files=($DOTFILES/*/*.zsh)
 
-# plugins
+# load the path files
+for file in ${(M)config_files:#*/path.zsh}; do
+  echo "$file"
+  source "$file"
+done
 
-antigen bundle zsh-users/zsh-autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
-ZSH_AUTOSUGGEST_STRATEGY='match_prev_cmd'
+# load everything but the path and completion files
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
+  source "$file"
+done
 
-# antigen bundle zsh-users/zsh-syntax-highlighting
-
-# theme config
-
-export TERM="xterm-256color"
-# -> execution time
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='black'
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='blue'
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-# -> prompt
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time command_execution_time dir vcs)
-POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
-# -> how many minutes to sample average system load
-POWERLEVEL9K_LOAD_WHICH=5
-# -> more prompt
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="☯︎ "
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram load date)
-POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
-POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
-# -> current directory
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_SHORTEN_STRATEGY=Default
-# -> use theme
-POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
-antigen theme bhilburn/powerlevel9k powerlevel9k
-
-# use other frameworks
-antigen use oh-my-zsh
-
-# apply
-antigen apply
-
+# load every completion after autocomplete loads
+for file in ${(M)config_files:#*/completion.zsh}; do
+  source "$file"
+done
 
 #
-# EXPORTS
+# Antibody
 #
 
+# https://getantibody.github.io/usage/#static-loading
+# use `antir` to generate this file
+source ~/.zsh_plugins.sh
+
+#
+# PATH
+#
 
 HOMEBREW=/usr/local/bin
+GCLOUD=$HOME/google-cloud-sdk/bin
 MYBIN=$HOME/bin
 PATH=/usr/bin:/bin:/usr/sbin:/sbin
-PSC_PACKAGE=$HOME/workspace/learning/purescript/psc-package
-PURS=$HOME/purescript
+RUST=$HOME/.cargo/bin
 STACK=$HOME/.local/bin
 
 
-export PATH="$HOMEBREW:$PATH:$MYBIN:$PURS:$PSC_PACKAGE:$STACK"
-
+export PATH="$HOMEBREW:$GCLOUD:$PATH:$MYBIN:$RUST:$STACK"
 
 #
 # ALIASES
 #
 
-
 # active projects
-if [ -f $HOME/.projectsrc ]; then
-	. $HOME/.projectsrc
+if [ -f $HOME/.private-env ]; then
+	. $HOME/.private-env
 fi
 
+#
+# antibody
+#
+
+# https://getantibody.github.io/usage/#static-loading
+alias antir='antibody bundle < ~/dotfiles/antibody/bundles.txt > ~/.zsh_plugins.sh'
+alias antiup='antibody update'
+
+#
 # backups
+#
+
 alias ball='f() {
 echo "bwork"; time bwork;
 echo "bdrop"; time bdrop;
@@ -85,26 +81,36 @@ echo "bdesktop";  time bdesktop;
 echo "bhome";  time bhome;
 echo "bsublime";  time bsublime;
 };f'
-alias bwork="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '/Volumes/Bali Bull/mattgstevens/workspace/'"
-alias bdrop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '/Volumes/Bali Bull/mattgstevens/Dropbox/'"
-alias bdocs="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/ '/Volumes/Bali Bull/mattgstevens/Documents/'"
-alias bssh="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/.ssh '/Volumes/Bali Bull/mattgstevens/.ssh/'"
-alias bbackgrounds="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Pictures/Backgrounds '/Volumes/Bali Bull/mattgstevens/Backgrounds/'"
-alias bmusic="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Music/ '/Volumes/Bali Bull/mattgstevens/Music/'"
-alias bmovies="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Movies/ '/Volumes/Bali Bull/mattgstevens/Movies/'"
-alias bdesktop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Desktop/ '/Volumes/Bali Bull/mattgstevens/Desktop/'"
-alias bhome="cp ~/.projectsrc ~/.zsh_history '/Volumes/Bali Bull/mattgstevens/HOME/'"
-alias bsublime="cp -R ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/* /Volumes/Bali\ Bull/mattgstevens/Application\ Support/Sublime\ Text\ 3/Packages/User/"
+alias bwork="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' --exclude='*.ipc' --filter='dir-merge,-n .gitignore' ~/workspace/ '$BACKUP_DIR/workspace/'"
+alias bdrop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Dropbox/ '$BACKUP_DIR/Dropbox/'"
+alias bdocs="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Documents/ '$BACKUP_DIR/Documents/'"
+alias bssh="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/.ssh '$BACKUP_DIR/.ssh/'"
+alias bbackgrounds="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Pictures/Backgrounds '$BACKUP_DIR/Backgrounds/'"
+alias bmusic="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Music/ '$BACKUP_DIR/Music/'"
+alias bmovies="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Movies/ '$BACKUP_DIR/Movies/'"
+alias bdesktop="rsync --archive --verbose --progress --human-readable --delete-excluded --delete-after --exclude='.DS_Store' ~/Desktop/ '$BACKUP_DIR/Desktop/'"
+alias bhome="cp -R ~/.private-env ~/.zsh_history ~/.private '$BACKUP_DIR/HOME/'"
+alias bsublime="cp -R ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/ $BACKUP_DIR/Application\ Support/Sublime\ Text\ 3/Packages/User/"
 
-# secrets
-alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
-alias makessh='f() { ssh-keygen -t rsa -b 4096 -C "$1" -f $HOME/.ssh/$1 -N "" };f'
+#
+# brew
+#
 
+# removes old version of packages and their downloads; flag "s" removes downloads for latest packages
+alias brewclean='brew cleanup -s'
+
+#
 # clojurescript
+#
+
 alias cljsm='lein clean && lein cljsbuild once min'
 alias figboot='rlwrap lein figwheel dev'
 
+#
 # docker
+#
+
+# this was useful for an older version of docker, pre Docker.app, when using docker-machine
 alias dkmac='f() {
   unset DOCKER_TLS_VERIFY
   unset DOCKER_CERT_PATH
@@ -118,31 +124,37 @@ alias dkstop='docker stop $(docker ps -a -q)'
 alias dkhalt='dkstop && dkrm'
 # daemon
 alias dkd='docker run --rm -d -P'
-# interactive
-alias dki='docker run --rm -it -P'
-# shell
+# shell (input is docker image to run)
 alias dks='docker run -it $1 /bin/sh'
+# attach (input is container ID)
+alias dka='docker exec -it $1 /bin/sh'
+# build
+alias dkb='docker build . -t `echo $(basename $PWD):$(git rev-parse --short HEAD)`'
 
 # special hostname for Docker for mac
 # POSTGRES_HOST=docker.for.mac.host.internal
 
+#
 # docker-machine
+#
+
 alias dkm='docker-machine'
 alias dkmcreate='docker-machine create --driver virtualbox'
 alias dkmcreatedi='docker-machine create --driver digitalocean --digitalocean-access-token'
 alias dkmenv='f() { eval "$(docker-machine env $1)" };f'
 alias dkmboot='f() { dkm start $1 ; dkmenv $1 };f'
 
-# ethereum
-alias mist='/Applications/Mist.app/Contents/MacOS/Mist --rpc http://localhost:8545 --swarmurl "null"'
-
+#
 # find
-alias y='ps -ef | grep $1'
-alias wat='find . * | xargs grep --mmap -l'
-alias wat='find . -name $1 | xargs grep --mmap -l $2'
-alias eh='LANG=; grep -ce $1 $2'
+#
 
+alias y='ps -ef | grep $1'
+alias wat='f() { find . -name $1 | xargs grep --mmap -l $2 }'
+alias eh='LANG=; grep -ce $1 $2'
+#
 # git
+#
+
 # there is always more
 # https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/
 alias ga='git add'
@@ -153,7 +165,7 @@ alias gc='git commit'
 alias gd='git diff -w'
 alias gdc='git diff --cached'
 alias gf='git fetch -p'
-alias gl='git log'
+alias gl='git log --show-signature'
 alias gl0='git log --oneline'
 alias gls='git show --stat --oneline'
 alias gm='git merge --ff-only'
@@ -189,67 +201,152 @@ git-lsr () {
   _git-ls | sort -r
 }
 
+#
 # github
+#
+
 github-user () { curl -i https://api.github.com/users/$1 }
 
+#
 # gpg
+#
+
 alias gpgls='gpg --list-secret-keys --keyid-format LONG'
+# use the "sec" part of the above command for the desired key to export
 alias gpgex='gpg --armor --export $1'
 
+#
 # go
+#
+
 alias gota='go test ./...'
 alias gopath='GOPATH=`pwd`'
 
+#
 # helper
+#
+
 alias ..='cd ..'
 alias afk="date && pmset sleepnow"
 alias conversion='ruby $MYBIN/conversions.rb'
 alias duh='du -h'
+alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder;'
 alias hk='openssl rand $1 -hex'
-alias ix="curl -F 'f:1=<-' ix.io"
 alias la='ls -laT'
 alias lenv='source $MYBIN/load_env.sh'
-alias mkd='mkdir -p "$1" && cd "$_"'
+alias mkd='function() { echo $1 && mkdir -p $1 && cd "$_" }'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias sr='http-server --cors $1'
-alias tj='echo "# $(date +%Y%m%d)\n\n## today\n\n## soon\n\n## done" >> ~/Documents/journal/$(date +%Y%m%d).md && slime ~/Documents/journal'
+alias sshver='nc -v $1 22'
+alias tj='echo "# $(date +%Y-%m-%d)\n\n## today\n\n## soon\n\n## done\n\n## journal" >> ~/Documents/journal/$(date +%Y-%m-%d).md && slime ~/Documents/journal'
 alias uuid='node -e "function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,b)}; console.log(b())"'
-alias ytdl='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]" $1'
-alias ytdlmp3='youtube-dl $1 -x --audio-format "mp3"'
+alias notify='function(){ eval "caffeinate $1 && growlnotify -m $2" }'
 # alias filecount="find . -type f | awk 'BEGIN {FS=\"/\";} {print $2;}' | sort | uniq -c | sort -rn | less"
 # alias errorcount="find . -name '*.txt' | xargs cat | grep 'ERROR' | cut -d ':' -f 2 | sort | uniq -c"
 # alias rename="ls | awk '/-shamsi/ {c=$0; gsub(\"-shamsi\", \"-mandala\"); system(\"mv \" c \" \" $0);}'"
 # alias follow="tail -fn 1000 <file> | grep <filter>"
 
+#
+# node
+#
+
+alias node0='echo killing flow and node procs && pkill -f flow & pkill -f node'
+alias ys='yarn start'
+alias yi='yarn install'
+alias yt='yarn test'
+alias ytw='yarn test:watch'
+
+#
 # open
+#
+
 alias chrome='open -a "Google Chrome"'
 alias slime='open -a "Sublime Text"'
 
+#
+# online pastebin
+#
+
+alias ix="curl -F 'f:1=<-' ix.io"
+
+#
 # osx
+#
+
 alias trash='rm -rf $HOME/.Trash'
 
+#
 # redis
+#
+
 alias redkeys='$MYBIN/redis_key_size.sh'
 alias reddel='function _reddel() { redis-cli KEYS "$1"* | xargs redis-cli DEL };_reddel'
 
+#
 # rbenv
+#
+
 alias rvc='rbenv version'
 alias rvr='rbenv rehash'
 alias rvl='rbenv versions'
 alias rvu='rbenv local'
 
+#
+# secrets
+#
+
+alias makecert='f() { openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout $1.key -out $1.crt -subj "/CN=$1" -days 3650};f'
+alias makessh='f() { ssh-keygen -t rsa -b 4096 -C "$1" -f $HOME/.ssh/$1 -N "" };f'
+
+#
 # sublime
+#
+
 alias subsnip='slime ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/'
 
+#
 # rsync
+#
+
 alias rsync-copy="rsync -av --progress -h"
 alias rsync-move="rsync -av --progress -h --remove-source-files"
 alias rsync-update="rsync -avu --progress -h"
 alias rsync-synchronize="rsync -avu --delete --progress -h"
 
+#
+# rust
+#
+
+# run type checker
+alias cac="cargo check"
+# build documentation for all dependencies
+alias cad="cargo doc --open"
+alias caf="cargo fmt"
+# during CI this would be a better check
+# "cargo fmt -- --check"
+alias car="caf && cargo run"
+# output is in targets/debug
+alias cab="cargo build"
+# output is in targets/release
+alias cabr="cargo build --release"
+
+alias rsup="rustup update"
+alias rsupnight="rustup install nightly"
+
+#
+# youtube-dl
+#
+
+alias ytdl='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]" $1'
+alias ytdlmp3='youtube-dl $1 -x --audio-format "mp3"'
+
+#
 # zsh
+#
+
 alias zshrc='slime ~/.zshrc'
-alias zsr='source ~/.zshrc'
+# reload the $SHELL
+alias zsr='exec "$SHELL" -l'
 
 
 #
@@ -268,13 +365,11 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # . /Users/mattgstevens/torch/install/bin/torch-activate
 
 # nix
-# source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
 # google cloud SDK
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/mattgstevens/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
-# gpg signing commit messages
+# gpg signing git commit messages
 export GPG_TTY=$(tty)
